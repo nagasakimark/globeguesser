@@ -6,6 +6,8 @@ import './App.css';
 import pinRed from './assets/images/pin-red.png';
 import pinGreen from './assets/images/pin-green.png';
 import logo from './assets/images/logo.png';
+import qrcode from './assets/images/qrcode.png';
+import qrbutton from './assets/images/qrbutton.png';
 
 const ROUNDS = [
 	{
@@ -66,6 +68,7 @@ function App() {
 	const [bestScore, setBestScore] = useState(() => Number(localStorage.getItem('bestScore')) || 0);
 	const [finished, setFinished] = useState(false);
 	const [mapExpanded, setMapExpanded] = useState(false);
+	const [showQRCode, setShowQRCode] = useState(false);
 
 	function handleGuess() {
 		setShowConfirm(true);
@@ -323,6 +326,88 @@ function App() {
 			<div className="score-area">
 				さいこうスコア: {bestScore}
 			</div>
+			<button
+				onClick={() => setShowQRCode(true)}
+				style={{
+					position: 'fixed',
+					bottom: '20px',
+					right: '20px',
+					width: '50px',
+					height: '50px',
+					background: 'transparent',
+					border: 'none',
+					cursor: 'pointer',
+					boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+					zIndex: 1000,
+					padding: 0,
+					borderRadius: '4px',
+					overflow: 'hidden'
+				}}
+				title="QRコードを表示"
+			>
+				<img 
+					src={qrbutton} 
+					alt="QR Code" 
+					style={{ 
+						width: '100%', 
+						height: '100%',
+						objectFit: 'cover'
+					}} 
+				/>
+			</button>
+			{showQRCode && (
+				<div 
+					className="modal"
+					style={{
+						background: 'rgba(0,0,0,0.8)',
+						zIndex: 2000
+					}}
+					onClick={() => setShowQRCode(false)}
+				>
+					<div 
+						className="modal-content" 
+						style={{
+							width: 'auto',
+							maxWidth: '90vw',
+							maxHeight: '90vh',
+							padding: '20px',
+							background: '#fff',
+							borderRadius: '12px',
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center'
+						}}
+						onClick={(e) => e.stopPropagation()}
+					>
+						<h2 style={{ margin: '0 0 20px 0', color: '#333' }}>QRコード</h2>
+						<img 
+							src={qrcode} 
+							alt="QR Code" 
+							style={{ 
+								maxWidth: '100%', 
+								maxHeight: '70vh',
+								borderRadius: '8px'
+							}} 
+						/>
+						<button
+							onClick={() => setShowQRCode(false)}
+							style={{
+								marginTop: '20px',
+								padding: '10px 20px',
+								background: '#388e3c',
+								color: '#fff',
+								border: 'none',
+								borderRadius: '6px',
+								cursor: 'pointer',
+								fontSize: '16px'
+							}}
+						>
+							閉じる
+						</button>
+					</div>
+				</div>
+			)}
 			<footer>360cities画像を使用 | © 2025</footer>
 		</div>
 	);
